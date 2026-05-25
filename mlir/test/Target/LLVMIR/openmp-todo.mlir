@@ -301,10 +301,10 @@ atomic {
   llvm.atomicrmw fadd %arg2, %2 monotonic : !llvm.ptr, f32
   omp.yield
 }
-llvm.func @taskgroup_task_reduction(%x : !llvm.ptr) {
-  // expected-error@below {{not yet implemented: Unhandled clause task_reduction in omp.taskgroup operation}}
+llvm.func @taskgroup_task_reduction_byref(%x : !llvm.ptr) {
+  // expected-error@below {{not yet implemented: Unhandled clause task_reduction with byref modifier in omp.taskgroup operation}}
   // expected-error@below {{LLVM Translation failed for operation: omp.taskgroup}}
-  omp.taskgroup task_reduction(@add_f32 %x -> %prv : !llvm.ptr) {
+  omp.taskgroup task_reduction(byref @add_f32 %x -> %prv : !llvm.ptr) {
     omp.terminator
   }
   llvm.return
